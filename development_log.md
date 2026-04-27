@@ -13,4 +13,5 @@
 - Created map visualization utility in `utils.py` using `folium`. Configured Taiwan region coordinates and dynamic colored circle markers based on `avg_temp`.
 - Rewrote `app.py` Streamlit dashboard to use the new local CSV workflow, display the interactive Folium map, and add a sidebar button to trigger `fetch_weather.py`.
 - Updated `fetch_weather.py` to add `save_to_sqlite` function, fulfilling HW2-3. It creates `data.db`, populates the `TemperatureForecasts` table, and verifies insertion with SELECT queries.
-- Updated `app.py` to fulfill HW2-4: integrated SQLite data loading (`data.db`), added a dropdown region selector, and implemented a `st.line_chart` alongside a datatable to visualize 7-day temperature trends. Oraganized UI with tabs.
+- Updated `app.py` to fulfill HW2-4: integrated SQLite data loading (`data.db`), added a dropdown region selector, and implemented a `st.line_chart` alongside a datatable to visualize 7-day temperature trends. Organized UI with tabs and custom CSS.
+- Initialized Git repository, added a `.gitignore` to exclude temporary/generated files, and pushed the complete project to `https://github.com/Normad2005/AIoT_HW2`.

@@ -72,10 +72,10 @@ def create_weather_map(df, selected_date=None):
         popup_html = f"""
         <div style='width: 150px'>
             <b>{region}</b><br>
-            Date: {row['date']}<br>
-            Min Temp: {row['min_temp']}°C<br>
-            Max Temp: {row['max_temp']}°C<br>
-            Avg Temp: {row['avg_temp']:.1f}°C
+            日期: {row['date']}<br>
+            最低溫: {row['min_temp']}°C<br>
+            最高溫: {row['max_temp']}°C<br>
+            平均溫: {row['avg_temp']:.1f}°C
         </div>
         """
         

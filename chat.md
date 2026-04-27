@@ -33,3 +33,5 @@
 - **AI**: Modified `app.py` to use `st.columns([3, 2])` and enabled `use_container_width=True` for the Folium map. This ensures the map scales dynamically and prevents the table from wrapping to the next line on smaller screens.
 - **User**: Requested to remove redundant columns from the data tables.
 - **AI**: Modified `app.py` to add `hide_index=True` to the `st.dataframe` calls. For the HW2-4 tab, explicitly dropped the `regionName` column before displaying the table since it's redundant with the dropdown selection.
+- **User**: Requested to push the project to GitHub repository `https://github.com/Normad2005/AIoT_HW2`.
+- **AI**: Created `.gitignore`, initialized local Git repository, committed all files, and successfully pushed to the remote `main` branch.
