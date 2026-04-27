@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.streamlit/
+data.db
+weather_data.csv
+scratch_test_fileapi.py
+scratch_test_cwa.py

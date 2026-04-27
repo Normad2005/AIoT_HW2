@@ -1,0 +1,35 @@
+# Chat History
+
+## [2026-04-27 21:39]
+- **User**: Requested a new Python weather dashboard project.
+- **AI**: Initialized project structure and logs in `C:\Users\User\OneDrive\Desktop\新增資料夾\`.
+- **User**: Provided CWA API Key and requested to update `fetch_weather.py` to use endpoint F-A0010-001, handle SSL verification, and extract specific fields (Region, Min/Max Temp, Date) into structured data.
+- **AI**: Updated `fetch_weather.py` to handle CWA API request with `verify=False`, parse the JSON response, and return a Pandas DataFrame with the requested data. Updated `development_log.md` and `chat.md`.
+- **User**: Requested to extend `fetch_weather.py` to format columns (`date`, `region`, `min_temp`, `max_temp`, `avg_temp`), compute `avg_temp`, and save to `weather_data.csv` (overwriting each run).
+- **AI**: Extended `fetch_weather.py` to include the requested DataFrame logic, compute `avg_temp`, and export to `weather_data.csv` with `index=False`. Updated logs.
+- **User**: Requested to display data dynamically on a Taiwan map in Streamlit. Asked to add a utility function using Folium in `utils.py` with region coordinates, temperature-based color markers, and popups.
+- **AI**: Wrote `create_weather_map` in `utils.py` defining Taiwan region coordinates and color rules. Rewrote `app.py` to display the dynamic Folium map alongside the data table, and added a sidebar button to trigger the fetching script. Updated logs.
+- **User**: Requested to run the application.
+- **AI**: Executed `streamlit run app.py` in the background.
+- **User**: Asked why `weather_data.csv` is empty.
+- **AI**: Explained that the CWA API endpoint `F-A0010-001` is returning a `404 Not Found` error, causing the fetch script to fail. Wrote mock data to `weather_data.csv` so the user can test the dynamic map functionality.
+- **User**: Pointed out the correct CWA fileapi URL for `F-A0010-001` data downloads.
+- **AI**: Rewrote `fetch_weather.py` to use the `fileapi` endpoint, updated the JSON parsing logic to match the new nested structure, and successfully ran the script to fetch real CWA data into `weather_data.csv`.
+- **User**: Requested to open the webpage.
+- **AI**: Used the browser subagent to navigate to `http://localhost:8501` and verify the dashboard loaded correctly with the dynamic map and data.
+- **User**: Provided the homework grading criteria (HW2-1 & HW2-2) and asked if the current project meets the requirements.
+- **AI**: Reviewed the criteria. Added `json.dumps` print statements into `fetch_weather.py` to strictly satisfy the "使用 json.dumps 觀察獲得/提取的資料" requirement. Confirmed that all API fetching, JSON parsing, Min/Max temp extraction, and code structure rules are met.
+- **User**: Provided the grading criteria for HW2-3 (saving to SQLite3 database and querying it).
+- **AI**: Wrote a `save_to_sqlite` function inside `fetch_weather.py` that creates `data.db`, inserts the parsed DataFrame into the `TemperatureForecasts` table, and runs the required `SELECT` queries to verify the insertion. Updated logs.
+- **User**: Provided the grading criteria for HW2-4 (creating a Streamlit Web App that loads from SQLite, has a dropdown, line chart, and table).
+- **AI**: Modified `app.py` to include a new tab specifically for HW2-4. Implemented `load_data_from_db` to fetch from `data.db`. Added a `selectbox` for region, a `line_chart` for MinT/MaxT, and a data table. Updated logs.
+- **User**: Requested to make the tabs larger and set "Interactive Map (Bonus)" as the default tab.
+- **AI**: Modified `app.py` to inject custom CSS to increase the font size of the tabs. Swapped the order of the tabs in `st.tabs` so that the Map tab is selected by default.
+- **User**: Requested to make the temperature map smaller.
+- **AI**: Modified `app.py` to reduce the `width` and `height` parameters of the `st_folium` component.
+- **User**: Requested to revert the temperature map size back to original because it felt too empty.
+- **AI**: Modified `app.py` to revert the `width` and `height` parameters of `st_folium` back to 800x600.
+- **User**: Requested to put the data table to the right of the map.
+- **AI**: Modified `app.py` to use `st.columns([3, 2])` and enabled `use_container_width=True` for the Folium map. This ensures the map scales dynamically and prevents the table from wrapping to the next line on smaller screens.
+- **User**: Requested to remove redundant columns from the data tables.
+- **AI**: Modified `app.py` to add `hide_index=True` to the `st.dataframe` calls. For the HW2-4 tab, explicitly dropped the `regionName` column before displaying the table since it's redundant with the dropdown selection.
