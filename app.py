@@ -41,7 +41,7 @@ st.markdown("""
 <style>
     /* Minimalist Light Theme */
     .stApp {
-        background-color: #F8F9FA;
+        background-color: #F0F2F5;
     }
     .stTabs [data-baseweb="tab-list"] {
         gap: 20px;
