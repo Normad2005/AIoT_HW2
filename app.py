@@ -3,6 +3,7 @@ import pandas as pd
 import sqlite3
 from streamlit_folium import st_folium
 import subprocess
+import sys
 
 from utils import create_weather_map, load_data
 
@@ -16,7 +17,7 @@ if st.sidebar.button("獲取最新資料 (執行 fetch_weather.py)"):
     with st.spinner("正在從氣象署 API 獲取資料..."):
         try:
             # Run the fetch_weather.py script to update CSV and SQLite
-            result = subprocess.run(["python", "fetch_weather.py"], capture_output=True, text=True)
+            result = subprocess.run([sys.executable, "fetch_weather.py"], capture_output=True, text=True)
             if result.returncode == 0:
                 st.sidebar.success("資料更新成功！")
             else:
