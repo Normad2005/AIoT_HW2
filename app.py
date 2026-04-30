@@ -8,7 +8,7 @@ import plotly.express as px
 
 from utils import create_weather_map, load_data
 
-st.set_page_config(page_title="台灣氣象儀表板", layout="centered")
+st.set_page_config(page_title="台灣氣象儀表板", layout="wide")
 
 st.title("台灣氣象儀表板")
 
