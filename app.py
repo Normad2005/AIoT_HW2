@@ -12,19 +12,18 @@ st.set_page_config(page_title="台灣氣象儀表板", layout="wide")
 
 st.title("台灣氣象儀表板")
 
-# Sidebar controls
-st.sidebar.header("控制面版")
-if st.sidebar.button("獲取最新資料 (執行 fetch_weather.py)"):
-    with st.spinner("正在從氣象署 API 獲取資料..."):
-        try:
-            # Run the fetch_weather.py script to update CSV and SQLite
-            result = subprocess.run([sys.executable, "fetch_weather.py"], capture_output=True, text=True)
-            if result.returncode == 0:
-                st.sidebar.success("資料更新成功！")
-            else:
-                st.sidebar.error(f"資料更新出錯: {result.stderr}")
-        except Exception as e:
-            st.sidebar.error(f"執行出錯: {e}")
+@st.cache_data(ttl=3600, show_spinner=False)
+def fetch_latest_data():
+    """Automatically fetch latest weather data (caches for 1 hour)"""
+    try:
+        subprocess.run([sys.executable, "fetch_weather.py"], capture_output=True, text=True)
+        return True
+    except Exception:
+        return False
+
+# Trigger the auto-fetch (will only run once per hour)
+with st.spinner("正在為您準備最新天氣資訊..."):
+    fetch_latest_data()
 
 def load_data_from_db(db_name="data.db"):
     """HW2-4: 從 SQLite3 資料庫查詢資料"""
@@ -134,7 +133,7 @@ with tab2:
         st.dataframe(display_region_df, use_container_width=True, hide_index=True)
         
     else:
-        st.warning("SQLite 資料庫為空或未找到。請點擊『獲取最新資料』。")
+        st.warning("暫無資料，請稍後再試或檢查 API 狀態。")
 
 with tab1:
     st.header("台灣氣溫分佈圖")
@@ -164,4 +163,4 @@ with tab1:
             display_df = df_csv[df_csv['date'] == selected_date].drop(columns=['date'])
             st.dataframe(display_df, use_container_width=True, height=600, hide_index=True)
     else:
-        st.info("CSV 資料不可用。請先獲取資料。")
+        st.info("暫無資料，請稍後再試或檢查 API 狀態。")
