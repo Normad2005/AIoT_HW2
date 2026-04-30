@@ -16,16 +16,19 @@
 
 ## 📝 Development Log
 
-### [2026-04-30] - UI/UX 升級與自動化 (Today)
-- **Bug Fix**: 修復 Streamlit Cloud 佈署時 `ModuleNotFoundError: No module named 'requests'` 錯誤（將 `subprocess.run` 執行指令由 `python` 改為 `sys.executable` 以對應正確的虛擬環境）。
-- **UI 升級**: 導入極簡亮色系 (Clean & Minimalist Light) 主題，透過 `.streamlit/config.toml` 與自訂 CSS 增加卡片圓角、陰影與淺灰色背景 (`#F0F2F5`)。
-- **視覺優化**: 將原本的 `st.line_chart` 替換為 `plotly.express` 互動圖表，提供平滑曲線與更好的數據懸浮提示。
-- **自動化**: 移除手動獲取資料的按鈕，改用 `@st.cache_data(ttl=3600)` 實作背景自動定期抓取，並加入 `st.metric` 指標摘要。
-- **排版調整**: 將頁面佈局改為 `centered`，使內容區塊更集中，提升閱讀體驗與截圖便利性。
+### 第一階段：基礎架構與 API 串接
+- **專案初始化**：建立 `app.py`, `fetch_weather.py`, `utils.py` 等專案核心結構。
+- **CWA API 整合**：串接中央氣象署 API (F-A0010-001)，處理 JSON 解析與 SSL 驗證，成功獲取全台各縣市氣溫預報。
 
-### [2026-04-27] - 核心功能開發與資料庫整合
-- **專案初始化**: 建立 `app.py`, `fetch_weather.py`, `utils.py` 等專案結構。
-- **API 整合**: 串接中央氣象署 CWA API (F-A0010-001)，並處理 SSL 驗證與 JSON 解析。
-- **資料處理**: 實作 `avg_temp` 計算邏輯，並將預報資料同步儲存至 CSV 與 SQLite3 資料庫 (`data.db`)，完成 HW2-3 需求。
-- **視覺化實作**: 在 `utils.py` 中利用 `folium` 根據氣溫動態標註地圖顏色。
-- **儀表板開發**: 實作 Streamlit 分頁功能 (Tabs)，整合地圖顯示、下拉式地區選擇器與 7 日氣溫趨勢圖表，完成 HW2-4 需求。
+### 第二階段：資料儲存與處理 (HW2-3)
+- **多格式儲存**：實作資料處理邏輯，計算平均氣溫，並將結果同步儲存至 CSV 檔案與 SQLite3 資料庫 (`data.db`)。
+- **資料完整性**：確保每次執行 `fetch_weather.py` 皆能正確更新資料表，並透過查詢指令驗證資料寫入。
+
+### 第三階段：儀表板開發與地圖視覺化 (HW2-4)
+- **地圖視覺化**：利用 `folium` 根據各縣市平均氣溫動態標註顏色，直觀呈現台灣氣溫分佈。
+- **互動式功能**：實作 Streamlit 分頁 (Tabs) 介面、地區下拉式選單與趨勢圖表，整合 SQLite 資料庫讀取功能。
+
+### 第四階段：UI/UX 優化與自動化升級 (今日)
+- **自動化抓取**：移除手動按鈕，改用 `@st.cache_data` 實作背景自動定期更新與快取機制。
+- **介面大翻新**：導入極簡亮色系設計、自訂 CSS 卡片陰影、淺灰色背景，並將圖表升級為 Plotly 互動式折線圖。
+- **佈署優化**：修復 Streamlit Cloud 環境路徑問題，並調整排版為 `centered` 模式，提升裝置相容性與美觀度。
