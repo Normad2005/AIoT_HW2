@@ -1,5 +1,7 @@
 # AIoT HW2 - 台灣氣象儀表板 (Taiwan Weather Dashboard)
 
+Live demo：https://aiothw2-v6gezgj3ijtkwyceddvrsm.streamlit.app/
+
 這是一個基於 Streamlit 開發的台灣即時氣象儀表板。專案會自動從中央氣象署抓取最新的氣溫與天氣資料，並以極簡且現代化的介面呈現給使用者。
 
 ## 🌟 功能特色
