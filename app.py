@@ -4,6 +4,7 @@ import sqlite3
 from streamlit_folium import st_folium
 import subprocess
 import sys
+import plotly.express as px
 
 from utils import create_weather_map, load_data
 
@@ -36,12 +37,41 @@ def load_data_from_db(db_name="data.db"):
     except Exception as e:
         return pd.DataFrame()
 
-# Custom CSS to make tabs larger
+# Custom CSS for Clean & Minimalist Light Theme
 st.markdown("""
 <style>
+    /* Minimalist Light Theme */
+    .stApp {
+        background-color: #F8F9FA;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 20px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #ffffff;
+        border-radius: 8px 8px 0 0;
+        padding: 10px 20px;
+        box-shadow: 0 -2px 5px rgba(0,0,0,0.02);
+    }
     .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
-        font-size: 20px;
-        font-weight: bold;
+        font-size: 18px;
+        font-weight: 600;
+        color: #2C3E50;
+    }
+    div[data-testid="stMetric"] {
+        background-color: #ffffff;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+        border: 1px solid #E9ECEF;
+    }
+    div[data-testid="stMetric"] label {
+        color: #6C757D !important;
+        font-weight: 500;
+    }
+    h1, h2, h3 {
+        color: #2C3E50;
+        font-family: 'Inter', sans-serif;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -63,12 +93,40 @@ with tab2:
         # 過濾該地區的資料
         region_df = df_db[df_db['regionName'] == selected_region].copy()
         
-        # 準備畫圖用的資料 (以日期為 index)
-        chart_data = region_df.set_index('dataDate')[['MinT', 'MaxT']]
+        # 顯示近期摘要卡片
+        st.subheader(f"{selected_region} 近期氣溫摘要")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("最高溫 (一週)", f"{region_df['MaxT'].max()} °C")
+        with col2:
+            st.metric("最低溫 (一週)", f"{region_df['MinT'].min()} °C")
+        with col3:
+            avg_temp = round((region_df['MaxT'].mean() + region_df['MinT'].mean()) / 2, 1)
+            st.metric("平均氣溫", f"{avg_temp} °C")
+
+        st.markdown("<br>", unsafe_allow_html=True)
         
-        # 3. 使用折線圖顯示一週的氣溫資料
-        st.subheader(f"{selected_region} 氣溫趨勢")
-        st.line_chart(chart_data)
+        # 3. 使用 Plotly 折線圖顯示一週的氣溫資料
+        st.subheader("氣溫趨勢圖")
+        fig = px.line(
+            region_df, 
+            x='dataDate', 
+            y=['MinT', 'MaxT'], 
+            markers=True,
+            color_discrete_sequence=['#4F8BF9', '#FF6B6B']
+        )
+        fig.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            xaxis_title="日期",
+            yaxis_title="溫度 (°C)",
+            legend_title="溫度類型",
+            hovermode="x unified",
+            margin=dict(l=0, r=0, t=30, b=0)
+        )
+        fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#E9ECEF')
+        fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#E9ECEF')
+        st.plotly_chart(fig, use_container_width=True)
         
         # 4. 使用表格顯示一週的氣溫資料
         st.subheader("預報資料表格")
